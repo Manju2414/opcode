@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
-  Plus, 
-  Trash2, 
-  Save, 
+  Plus,
+  Trash2,
+  Save,
   AlertCircle,
   Loader2,
-  Shield,
   Check,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -28,7 +27,6 @@ import { HooksEditor } from "./HooksEditor";
 import { SlashCommandsManager } from "./SlashCommandsManager";
 import { ProxySettings } from "./ProxySettings";
 import { useTheme, useTrackEvent } from "@/hooks";
-import { analytics } from "@/lib/analytics";
 import { TabPersistenceService } from "@/services/tabPersistence";
 
 interface SettingsProps {
@@ -88,8 +86,6 @@ export const Settings: React.FC<SettingsProps> = ({
   const [proxySettingsChanged, setProxySettingsChanged] = useState(false);
   const saveProxySettings = React.useRef<(() => Promise<void>) | null>(null);
   
-  // Analytics state
-  const [analyticsEnabled, setAnalyticsEnabled] = useState(false);
   const trackEvent = useTrackEvent();
   
   // Tab persistence state
@@ -101,7 +97,6 @@ export const Settings: React.FC<SettingsProps> = ({
   useEffect(() => {
     loadSettings();
     loadClaudeBinaryPath();
-    loadAnalyticsSettings();
     // Load tab persistence setting
     setTabPersistenceEnabled(TabPersistenceService.isEnabled());
     // Load startup intro setting (default to true if not set)
@@ -110,16 +105,6 @@ export const Settings: React.FC<SettingsProps> = ({
       setStartupIntroEnabled(pref === null ? true : pref === 'true');
     })();
   }, []);
-
-  /**
-   * Loads analytics settings
-   */
-  const loadAnalyticsSettings = async () => {
-    const settings = analytics.getSettings();
-    if (settings) {
-      setAnalyticsEnabled(settings.enabled);
-    }
-  };
 
   /**
    * Loads the current Claude binary path
@@ -669,50 +654,6 @@ export const Settings: React.FC<SettingsProps> = ({
 
                     {/* Separator */}
                     <div className="border-t border-border pt-4 mt-6" />
-                    
-                    {/* Analytics Toggle */}
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-1">
-                        <Label htmlFor="analytics-enabled">Enable Analytics</Label>
-                        <p className="text-caption text-muted-foreground">
-                          Help improve opcode by sharing anonymous usage data
-                        </p>
-                      </div>
-                      <Switch
-                        id="analytics-enabled"
-                        checked={analyticsEnabled}
-                        onCheckedChange={async (checked) => {
-                          if (checked) {
-                            await analytics.enable();
-                            setAnalyticsEnabled(true);
-                            trackEvent.settingsChanged('analytics_enabled', true);
-                            setToast({ message: "Analytics enabled", type: "success" });
-                          } else {
-                            await analytics.disable();
-                            setAnalyticsEnabled(false);
-                            trackEvent.settingsChanged('analytics_enabled', false);
-                            setToast({ message: "Analytics disabled", type: "success" });
-                          }
-                        }}
-                      />
-                    </div>
-                    
-                    {/* Privacy Info */}
-                    {analyticsEnabled && (
-                      <div className="rounded-lg border border-border bg-muted/50 p-3">
-                        <div className="flex gap-2">
-                          <Shield className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
-                          <div className="space-y-1">
-                            <p className="text-xs font-medium text-foreground">Your privacy is protected</p>
-                            <ul className="text-xs text-muted-foreground space-y-0.5">
-                              <li>• No personal information or file contents collected</li>
-                              <li>• All data is anonymous with random IDs</li>
-                              <li>• You can disable analytics at any time</li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    )}
                     
                     {/* Tab Persistence Toggle */}
                     <div className="flex items-center justify-between">

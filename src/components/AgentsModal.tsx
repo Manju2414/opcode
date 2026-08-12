@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Bot, Plus, Loader2, Play, Clock, CheckCircle, XCircle, Trash2, Import, ChevronDown, FileJson, Globe, Download } from 'lucide-react';
+import { Bot, Plus, Loader2, Play, Clock, CheckCircle, XCircle, Trash2, Import, ChevronDown, FileJson, Download } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -175,10 +175,6 @@ export const AgentsModal: React.FC<AgentsModalProps> = ({ open, onOpenChange }) 
     }
   };
 
-  const handleImportFromGitHub = () => {
-    setShowGitHubBrowser(true);
-  };
-
   const handleExportAgent = async (agent: Agent) => {
     try {
       const exportData = await api.exportAgent(agent.id!);
@@ -261,10 +257,6 @@ export const AgentsModal: React.FC<AgentsModalProps> = ({ open, onOpenChange }) 
                       <DropdownMenuItem onClick={handleImportFromFile}>
                         <FileJson className="w-4 h-4 mr-2" />
                         From File
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={handleImportFromGitHub}>
-                        <Globe className="w-4 h-4 mr-2" />
-                        From GitHub
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
@@ -378,7 +370,7 @@ export const AgentsModal: React.FC<AgentsModalProps> = ({ open, onOpenChange }) 
                               <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
                                 <span>Started: {formatISOTimestamp(run.created_at)}</span>
                                 <Badge variant="outline" className="text-xs">
-                                  {run.model === 'opus' ? 'Claude 4 Opus' : 'Claude 4 Sonnet'}
+                                  {run.model === 'opus' ? 'Claude Opus 5' : run.model === 'sonnet' ? 'Claude Sonnet 5' : 'Claude Haiku 4.5'}
                                 </Badge>
                               </div>
                             </div>

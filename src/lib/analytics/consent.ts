@@ -22,10 +22,10 @@ export class ConsentManager {
       if (stored) {
         this.settings = JSON.parse(stored);
       } else {
-        // Initialize with default settings
+        // Telemetry has been removed from this fork; default to opted-out.
         this.settings = {
-          enabled: true,
-          hasConsented: true,
+          enabled: false,
+          hasConsented: false,
         };
       }
       
@@ -54,40 +54,17 @@ export class ConsentManager {
     }
   }
   
-  async grantConsent(): Promise<void> {
-    if (!this.settings) {
-      await this.initialize();
-    }
-    
-    this.settings!.enabled = true;
-    this.settings!.hasConsented = true;
-    this.settings!.consentDate = new Date().toISOString();
-    
-    await this.saveSettings();
-  }
-  
-  async revokeConsent(): Promise<void> {
-    if (!this.settings) {
-      await this.initialize();
-    }
-    
-    this.settings!.enabled = false;
-    
-    await this.saveSettings();
-  }
-  
   async deleteAllData(): Promise<void> {
     // Clear local storage
     localStorage.removeItem(ANALYTICS_STORAGE_KEY);
-    
-    // Reset settings with new anonymous ID
+
     this.settings = {
-      enabled: true,
-      hasConsented: true,
+      enabled: false,
+      hasConsented: false,
       userId: this.generateAnonymousId(),
       sessionId: this.generateSessionId(),
     };
-    
+
     await this.saveSettings();
   }
   

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Bot, Loader2, Play, Clock, CheckCircle, XCircle, Trash2, Import, ChevronDown, ChevronRight, FileJson, Globe, Download, Plus, History, Edit } from 'lucide-react';
+import { Bot, Loader2, Play, Clock, CheckCircle, XCircle, Trash2, Import, ChevronDown, ChevronRight, FileJson, Download, Plus, History, Edit } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -224,10 +224,6 @@ export const Agents: React.FC = () => {
                   <DropdownMenuItem onClick={handleImportFromFile}>
                     <FileJson className="w-4 h-4 mr-2" />
                     From File
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setShowGitHubBrowser(true)}>
-                    <Globe className="w-4 h-4 mr-2" />
-                    From GitHub
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>

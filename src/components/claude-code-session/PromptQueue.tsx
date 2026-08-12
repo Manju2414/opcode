@@ -4,11 +4,12 @@ import { X, Clock, Sparkles, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import type { ModelId } from '@/components/FloatingPromptInput';
 
 interface QueuedPrompt {
   id: string;
   prompt: string;
-  model: "sonnet" | "opus";
+  model: ModelId;
 }
 
 interface PromptQueueProps {

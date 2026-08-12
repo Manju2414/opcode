@@ -41,7 +41,7 @@ interface FloatingPromptInputProps {
   /**
    * Callback when prompt is sent
    */
-  onSend: (prompt: string, model: "sonnet" | "opus") => void;
+  onSend: (prompt: string, model: ModelId) => void;
   /**
    * Whether the input is loading
    */
@@ -53,7 +53,7 @@ interface FloatingPromptInputProps {
   /**
    * Default model to select
    */
-  defaultModel?: "sonnet" | "opus";
+  defaultModel?: ModelId;
   /**
    * Project path for file picker
    */
@@ -172,8 +172,10 @@ const ThinkingModeIndicator: React.FC<{ level: number; color?: string }> = ({ le
   );
 };
 
+export type ModelId = "sonnet" | "opus" | "claude-haiku-4-5-20251001";
+
 type Model = {
-  id: "sonnet" | "opus";
+  id: ModelId;
   name: string;
   description: string;
   icon: React.ReactNode;
@@ -183,8 +185,16 @@ type Model = {
 
 const MODELS: Model[] = [
   {
+    id: "claude-haiku-4-5-20251001",
+    name: "Claude Haiku 4.5",
+    description: "Fastest, lightweight for simple tasks",
+    icon: <Sparkles className="h-3.5 w-3.5" />,
+    shortName: "H",
+    color: "text-primary"
+  },
+  {
     id: "sonnet",
-    name: "Claude 4 Sonnet",
+    name: "Claude Sonnet 5",
     description: "Faster, efficient for most tasks",
     icon: <Zap className="h-3.5 w-3.5" />,
     shortName: "S",
@@ -192,9 +202,9 @@ const MODELS: Model[] = [
   },
   {
     id: "opus",
-    name: "Claude 4 Opus",
+    name: "Claude Opus 5",
     description: "More capable, better for complex tasks",
-    icon: <Zap className="h-3.5 w-3.5" />,
+    icon: <Brain className="h-3.5 w-3.5" />,
     shortName: "O",
     color: "text-primary"
   }
@@ -225,7 +235,7 @@ const FloatingPromptInputInner = (
   ref: React.Ref<FloatingPromptInputRef>,
 ) => {
   const [prompt, setPrompt] = useState("");
-  const [selectedModel, setSelectedModel] = useState<"sonnet" | "opus">(defaultModel);
+  const [selectedModel, setSelectedModel] = useState<ModelId>(defaultModel);
   const [selectedThinkingMode, setSelectedThinkingMode] = useState<ThinkingMode>("auto");
   const [isExpanded, setIsExpanded] = useState(false);
   const [modelPickerOpen, setModelPickerOpen] = useState(false);

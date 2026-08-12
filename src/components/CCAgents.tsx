@@ -10,7 +10,6 @@ import {
   History,
   Download,
   Upload,
-  Globe,
   FileJson,
   ChevronDown
 } from "lucide-react";
@@ -331,10 +330,6 @@ export const CCAgents: React.FC<CCAgentsProps> = ({ onBack, className }) => {
                   <DropdownMenuItem onClick={handleImportAgent}>
                     <FileJson className="h-4 w-4 mr-2" />
                     From File
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setShowGitHubBrowser(true)}>
-                    <Globe className="h-4 w-4 mr-2" />
-                    From GitHub
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
